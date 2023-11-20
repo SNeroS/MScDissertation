@@ -1,0 +1,22 @@
+apiVersion: policy.linkerd.io/v1beta2
+kind: HTTPRoute
+metadata:
+  name: bb-route
+  namespace: default
+spec:
+  parentRefs:
+    - name: bb-v1
+      kind: Service
+      group: core
+      port: 8080
+  rules:
+    - matches:
+      - headers:
+        - name: "x-matching"
+          value: "hello"
+      backendRefs:
+        - name: bb-v2
+          port: 8080
+    - backendRefs:
+      - name: bb-v1
+        port: 8080

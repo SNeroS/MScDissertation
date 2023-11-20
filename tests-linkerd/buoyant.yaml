@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: v1
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bb
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: bb
+        version: v1
+    spec:
+      containers:
+      - name: terminus
+        image: buoyantio/bb:v0.0.6
+        args:
+        - terminus
+        - "--h1-server-port=8080"
+        - "--response-text=v1"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: v2
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bb
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: bb
+        version: v2
+    spec:
+      containers:
+      - name: terminus
+        image: buoyantio/bb:v0.0.6
+        args:
+        - terminus
+        - "--h1-server-port=8080"
+        - "--response-text=v2"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: v3
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bb
+      version: v3
+  template:
+    metadata:
+      labels:
+        app: bb
+        version: v3
+    spec:
+      containers:
+      - name: terminus
+        image: buoyantio/bb:v0.0.6
+        args:
+        - terminus
+        - "--h1-server-port=8080"
+        - "--response-text=v3"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bb-v1
+  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: bb
+    version: v1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bb-v2
+  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: bb
+    version: v2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bb-v3
+  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: bb
+    version: v3

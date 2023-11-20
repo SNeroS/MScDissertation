@@ -1,0 +1,20 @@
+apiVersion: policy.linkerd.io/v1beta2
+kind: HTTPRoute
+metadata:
+  name: timeout
+  namespace: default
+spec:
+  parentRefs:
+    - name: bb-v1
+      kind: Service
+      group: core
+      port: 8080
+  rules:
+    - matches:
+      - path:
+          type: Prefix
+          value: /
+        method: GET
+      timeouts:
+        request: 600ms
+        backendRequest: 300ms
